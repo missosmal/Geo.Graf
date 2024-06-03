@@ -38,15 +38,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //API ключ для YANDEX MAP
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         result = findViewById(R.id.locationText);
 
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-        }
         _LocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
     }
 
@@ -68,4 +64,19 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+    public Boolean GetPermissionGPS() {
+        ACCESS_FINE_LOCATION = ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION);
+        ACCESS_COARSE_LOCATION = ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        return ACCESS_FINE_LOCATION == PackageManager.PERMISSION_GRANTED ||
+                ACCESS_COARSE_LOCATION == PackageManager.PERMISSION_GRANTED;
+    }
+    public void OnGetGPS(View view){
+        if(GetPermissionGPS() == false)
+        {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+    }
 }
