@@ -9,16 +9,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+
 
 import com.example.geograf.databinding.ActivityMainBinding;
 
@@ -78,5 +73,23 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (GetPermissionGPS() == false) {
+            return;
+        } else {
+            _LocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    1000, 10, _LocationListener);
+            _LocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                    1000, 10, _LocationListener);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        _LocationManager.removeUpdates(_LocationListener);
     }
 }
